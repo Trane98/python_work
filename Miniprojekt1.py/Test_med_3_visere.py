@@ -1,5 +1,7 @@
 import pygame
 import math
+import datetime
+
 
 pygame.init() # Initialize Pygame
 screen = pygame.display.set_mode((840, 680)) # Create a window of 840x680 pixels
@@ -13,69 +15,39 @@ pygame.draw.circle(screen, (0, 0, 0), (x_start,y_start), længde, bredde)
 
 
 x_start,y_start=420,340
+
+#Sekund viser
 længde=255
 bredde=2
-
-#Ny linje 45 grader
 angle=math.radians(30)
 x_end=x_start+længde*math.cos(angle)
 y_end=y_start+længde*math.sin(angle)
 pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
+#Minut viser
+længde=250
+bredde=4
 angle=math.radians(60)
 x_end=x_start+længde*math.cos(angle)
 y_end=y_start+længde*math.sin(angle)
 pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
+#Time viser
+længde=150
+bredde=6
 angle=math.radians(90)
 x_end=x_start+længde*math.cos(angle)
 y_end=y_start+længde*math.sin(angle)
 pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
-angle=math.radians(120)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
-angle=math.radians(150)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
+#Lave tiden
+current_time=datetime.datetime.now()
+second=current_time.second
+minute=current_time.minute
+hour=current_time.hour
 
-angle=math.radians(180)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
-angle=math.radians(210)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
-
-angle=math.radians(240)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
-
-angle=math.radians(270)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
-
-angle=math.radians(300)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
-
-angle=math.radians(330)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
-
-angle=math.radians(360)
-x_end=x_start+længde*math.cos(angle)
-y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
 
 #Test af tal til uret
@@ -194,11 +166,6 @@ text_surface = font.render("3", True, (0, 0, 0))
 x_end = x_start + længde * math.cos(angle) - text_surface.get_width() // 2 
 y_end = y_start + længde * math.sin(angle) - text_surface.get_height() // 2
 screen.blit(text_surface, (x_end, y_end))
-
-#Test af at få uret til at virke
-from datetime import datetime
-clock = pygame.time.Clock()
-
 
 
 

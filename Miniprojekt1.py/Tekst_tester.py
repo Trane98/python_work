@@ -1,71 +1,44 @@
-# import pygame module in this program
 import pygame
+from math import sin, cos, radians
+from datetime import datetime
 
-# activate the pygame library
-# initiate pygame and give permission
-# to use pygame's functionality.
+# Initialize pygame and clock
 pygame.init()
+screen = pygame.display.set_mode((400, 400))
+clock = pygame.time.Clock()
 
-# define the RGB value for white,
-# green, blue colour .
-white = (255, 255, 255)
-green = (0, 255, 0)
-blue = (0, 0, 128)
+def draw_hand(screen, angle, length, width, color):
+    """ Draws a hand for the clock given an angle, length, width, and color. """
+    x = 200 + length * sin(radians(angle))
+    y = 200 - length * cos(radians(angle))
+    pygame.draw.line(screen, color, (200, 200), (x, y), width)
 
-# assigning values to X and Y variable
-X = 400
-Y = 400
+def calculate_angles():
+    """ Calculates the angles of the hour, minute, and second hands. """
+    now = datetime.now()
+    second_angle = now.second * 6  # 6 degrees per second
+    minute_angle = now.minute * 6 + now.second * 0.1  # 6 degrees per minute + small adjustment for seconds
+    hour_angle = now.hour % 12 * 30 + now.minute * 0.5  # 30 degrees per hour + adjustment for minutes
+    return hour_angle, minute_angle, second_angle
 
-# create the display surface object
-# of specific dimension..e(X, Y).
-display_surface = pygame.display.set_mode((X, Y))
+# Main loop
+running = True
+while running:
+    screen.fill((255, 255, 255))  # Clear the screen with white
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
 
-# set the pygame window name
-pygame.display.set_caption('Show Text')
+    # Calculate current angles
+    hour_angle, minute_angle, second_angle = calculate_angles()
 
-# create a font object.
-# 1st parameter is the font file
-# which is present in pygame.
-# 2nd parameter is size of the font
-font = pygame.font.Font('freesansbold.ttf', 32)
+    # Draw the clock hands
+    draw_hand(screen, hour_angle, 80, 8, (0, 0, 0))  # Hour hand
+    draw_hand(screen, minute_angle, 120, 5, (0, 0, 0))  # Minute hand
+    draw_hand(screen, second_angle, 140, 2, (255, 0, 0))  # Second hand
 
-# create a text surface object,
-# on which text is drawn on it.
-text = font.render('GeeksForGeeks', True, green, blue)
+    # Update display
+    pygame.display.flip()
+    clock.tick(60)  # Limit to 60 frames per second
 
-# create a rectangular object for the
-# text surface object
-textRect = text.get_rect()
-
-# set the center of the rectangular object.
-textRect.center = (X // 2, Y // 2)
-
-# infinite loop
-while True:
-
-	# completely fill the surface object
-	# with white color
-	display_surface.fill(white)
-
-	# copying the text surface object
-	# to the display surface object
-	# at the center coordinate.
-	display_surface.blit(text, textRect)
-
-	# iterate over the list of Event objects
-	# that was returned by pygame.event.get() method.
-	for event in pygame.event.get():
-
-		# if event object type is QUIT
-		# then quitting the pygame
-		# and program both.
-		if event.type == pygame.QUIT:
-
-			# deactivates the pygame library
-			pygame.quit()
-
-			# quit the program.
-			quit()
-
-		# Draws the surface object to the screen.
-		pygame.display.update()
+pygame.quit()

@@ -195,7 +195,7 @@ x_end = x_start + længde * math.cos(angle) - text_surface.get_width() // 2
 y_end = y_start + længde * math.sin(angle) - text_surface.get_height() // 2
 screen.blit(text_surface, (x_end, y_end))
 
-
+#Github test
 
 
 

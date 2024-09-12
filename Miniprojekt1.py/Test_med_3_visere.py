@@ -38,7 +38,7 @@ bredde=6
 angle=math.radians(90)
 x_end=x_start+længde*math.cos(angle)
 y_end=y_start+længde*math.sin(angle)
-pygame.draw.line(screen, (0, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
+pygame.draw.line(screen, (210, 0, 0), (x_start, y_start), (x_end, y_end),bredde)
 
 
 #Lave tiden

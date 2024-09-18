@@ -7,7 +7,7 @@ def main(): #This defines a function, which contains the primary logic of the pr
     print("+-------------------------------+") #These next lines are print commands, which inroduces the program as "King Domino points"
     print("| King Domino points calculator |")
     print("+-------------------------------+")
-    image_path = r"C:\Users\alext\Downloads\King Domino dataset\1.jpg" #Image path
+    image_path = r"C:\Users\alext\Downloads\King Domino dataset\6.jpg" #Image path
     if not os.path.isfile(image_path):#Tries to find another way to find pictures
         print("Image not found")
         return
@@ -34,21 +34,21 @@ def get_tiles(image):
 # Determine the type of terrain in a tile
 def get_terrain(tile):
     hsv_tile = cv.cvtColor(tile, cv.COLOR_BGR2HSV)
-    hue, saturation, value = np.median(hsv_tile, axis=(0,1)) # Consider using median instead of mean
+    hue, saturation, value = np.mean(hsv_tile, axis=(0,1)) # Consider using median instead of mean
     print(f"H: {hue}, S: {saturation}, V: {value}")
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
+    if 22 < hue < 30 and 210 < saturation < 255 and 140 < value < 205:
         return "Field"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
+    if 34 < hue < 50 and 95 < saturation < 182 and 36 < value < 80:
         return "Forest"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
-        return "Lake"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
-        return "Grassland"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
+    if 75 < hue < 105 and 190 < saturation < 245 and 114 < value < 190:
+        return "Ocean"
+    if 30 < hue < 44 and 185 < saturation < 230 and 105 < value < 160:
+        return "Medows"
+    if 17 < hue < 32 and 80 < saturation < 165 and 78 < value < 125:
         return "Swamp"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
+    if 28 < hue < 49 and 88 < saturation < 140 and 52 < value < 75:
         return "Mine"
-    if 0 < hue < 0 and 0 < saturation < 0 and 0 < value < 0:
+    if 20 < hue < 56 and 65 < saturation < 135 and 72 < value < 140:
         return "Home"
     return "Unknown"
 

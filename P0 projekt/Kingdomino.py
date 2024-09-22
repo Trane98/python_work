@@ -7,7 +7,7 @@ def main(): #This defines a function, which contains the primary logic of the pr
     print("+-------------------------------+") #These next lines are print commands, which inroduces the program as "King Domino points"
     print("| King Domino points calculator |")
     print("+-------------------------------+")
-    image_path = r"C:\Users\alext\Downloads\King Domino dataset\6.jpg" #Image path
+    image_path = r"C:\Users\alext\Downloads\King Domino dataset\13.jpg" #Image path
     if not os.path.isfile(image_path):#Tries to find another way to find pictures
         print("Image not found")
         return
@@ -34,23 +34,23 @@ def get_tiles(image):
 # Determine the type of terrain in a tile
 def get_terrain(tile):
     hsv_tile = cv.cvtColor(tile, cv.COLOR_BGR2HSV)
-    hue, saturation, value = np.mean(hsv_tile, axis=(0,1)) # Consider using median instead of mean
+    hue, saturation, value = np.median(hsv_tile, axis=(0,1)) # Consider using median instead of mean
     print(f"H: {hue}, S: {saturation}, V: {value}")
-    if 22 < hue < 30 and 210 < saturation < 255 and 140 < value < 205:
+    if 22 < hue < 30 and 225 < saturation < 256 and 104 < value < 210:
         return "Field"
-    if 34 < hue < 50 and 95 < saturation < 182 and 36 < value < 80:
+    if 28 < hue < 61 and 73 < saturation < 224 and 32 < value < 70:
         return "Forest"
-    if 75 < hue < 105 and 190 < saturation < 245 and 114 < value < 190:
-        return "Ocean"
-    if 30 < hue < 44 and 185 < saturation < 230 and 105 < value < 160:
-        return "Medows"
-    if 17 < hue < 32 and 80 < saturation < 165 and 78 < value < 125:
+    if 100 < hue < 110 and 210 < saturation < 256 and 107 < value < 195:
+        return "Lake"
+    if 33 < hue < 49 and 160 < saturation < 256 and 72 < value < 170:
+        return "Grassland"
+    if 17 < hue < 30 and 34 < saturation < 210 and 72 < value < 148:
         return "Swamp"
-    if 28 < hue < 49 and 88 < saturation < 140 and 52 < value < 75:
+    if 19 < hue < 28 and 38 < saturation < 140 and 23 < value < 70:
         return "Mine"
-    if 20 < hue < 56 and 65 < saturation < 135 and 72 < value < 140:
+    if 16 < hue < 39 and 40 < saturation < 150 and 52 < value < 150:
         return "Home"
-    return "Unknown"
+    return "Table"
 
 if __name__ == "__main__":
     main()

@@ -87,6 +87,13 @@ while running:
     #Make rectangle
     pygame.draw.rect(screen, (BLACK), (box_position[0], box_position[1], box_size[0], box_size[1]))
 
+    guldklumper = {"color" : RED, "radius" : 10, "position" : (255,255)}
+    
+    for guldklump in range(10):
+
+        pygame.draw.circle(screen, guldklumper["color"], guldklumper["position"], guldklumper["radius"])
+
+    
     pygame.display.flip()
      
     # how many updates per second

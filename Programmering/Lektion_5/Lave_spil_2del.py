@@ -25,7 +25,7 @@ box_size = [20, 20]
 x = 0
 y = 0
 
-
+max_speed = 5
 
 running = True
 while running:
@@ -47,6 +47,19 @@ while running:
         y += 5
 
 
+    if x > max_speed:
+        x = max_speed
+    elif x < -max_speed:
+        x = -max_speed
+
+
+    if y > max_speed:
+        y = max_speed
+    elif y < -max_speed:
+        y = -max_speed
+
+
+
     box_position[0] += x
     box_position[1] += y
 
@@ -61,6 +74,6 @@ while running:
     pygame.display.flip()
      
     # how many updates per second
-    clock.tick(5)
+    clock.tick(20)
 
 pygame.quit()

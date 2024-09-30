@@ -1,4 +1,4 @@
-import pygame , sys
+import pygame
 from datetime import datetime
 import math
 import pygame.key
@@ -7,165 +7,133 @@ from math import sqrt
 
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-YELLOW = (255, 255, 0)
- 
+YELLOW = (225, 225, 0)
+
 # initialize pygame
 pygame.init()
 screen_size = (840, 680)
- 
-# create a window
 screen = pygame.display.set_mode(screen_size)
- 
+
 # clock is used to set a max fps
 clock = pygame.time.Clock()
 
-#Rect informations (starting point and box_size)
+
+# Rect information (starting point and box_size)
 box_position = [370, 290]
 box_size = [20, 20]
 
-#Variabler til bevægelse
-x = 0
-y = 0
+# Variables for movement for rect
+x_box = 0
+y_box = 0
 
-#Changes the speed of the rect
+# Changes the speed of the rect
 max_speed = 5
 
-#This part generates a list of 10 guldklumper, where their position is random generated. 
+#Points related individuel point and their total
+guldklumper_points_individuel = []
+total_points = []
 
-guldklump0 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump1 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump2 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump3 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump4 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump5 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump6 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump7 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump8 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
-guldklump9 = {"color" : YELLOW, "radius" : 10, "position" : (random.uniform(0,840), random.uniform(0,680)),}
+#Text for total score and the goldnugget score
+font_total_score = pygame.font.SysFont("Arial", 36)
+font_nugget_points = pygame.font.SysFont("Arial", 15)
 
 
-x0, y0 = guldklump0["position"]
-x1, y1 = guldklump1["position"]
-x2, y2 = guldklump2["position"]
-x3, y3 = guldklump3["position"]
-x4, y4 = guldklump4["position"]
-x5, y5 = guldklump5["position"]
-x6, y6 = guldklump6["position"]
-x7, y7 = guldklump7["position"]
-x8, y8 = guldklump8["position"]
-x9, y9 = guldklump9["position"]
-
-
-
+guldklumper = []
+# Generate a list of 10 gold nuggets with random positions
+for i in range(10):
+    guldklumper.append({
+        "color": YELLOW,
+        "radius": 10,
+        "position": (random.uniform(0, 840), random.uniform(0, 680)),
+        "points": random.uniform(0,100)
+    })
 
 running = True
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
-    #Get the state of all keyboard buttons
+
+    # Clear the screen
+    screen.fill(WHITE)
+
+    ####################################################### RECT CODE PART DOWN #########################################################
+
+    # Get the state of all keyboard buttons
     keys = pygame.key.get_pressed()
-    
-    #Changing the movements of which and how keys are pressed
+
+    # Changing the movements based on which keys are pressed
     if keys[pygame.K_a]:
-        x -= 5
+        x_box -= 5
     if keys[pygame.K_d]:
-        x += 5
+        x_box += 5
     if keys[pygame.K_w]:
-        y -= 5
+        y_box -= 5
     if keys[pygame.K_s]:
-        y += 5
-    if keys[pygame.K_SPACE]: #Space makes the rect go still
-        x = 0 
-        y = 0
+        y_box += 5
+    if keys[pygame.K_SPACE]:  # Space makes the rect go still
+        x_box = 0
+        y_box = 0
 
+    # Ensure the rect doesn't exceed max_speed
+    x_box = max(-max_speed, min(x_box, max_speed))
+    y_box = max(-max_speed, min(y_box, max_speed))
 
-    #Makes a max speed, so it will never exceed the max_speed value for x and y
-    if x > max_speed:
-        x = max_speed
-    elif x < -max_speed:
-        x = -max_speed
+    # Update the box's position
+    box_position[0] += x_box
+    box_position[1] += y_box
 
-    if y > max_speed:
-        y = max_speed
-    elif y < -max_speed:
-        y = -max_speed
-
-
-
-    #Opdates the box's position by adding the x and y value pressed
-    box_position[0] += x
-    box_position[1] += y
-
-    #Ændrer rect position, hvis den går ud over kanterne
+    # Wrap the rect position if it goes off-screen
     if box_position[0] > 840:
         box_position[0] = -20
-
     if box_position[0] < -20:
         box_position[0] = 840
-
     if box_position[1] > 680:
         box_position[1] = -20
-
     if box_position[1] < -20:
         box_position[1] = 680
 
+    # Make rectangle
+    pygame.draw.rect(screen, BLACK, (box_position[0] - box_size[0] / 2, box_position[1] - box_size[1] / 2, box_size[0], box_size[1]))
 
-    #clear the screen
-    screen.fill(WHITE)
+    ####################################################### RECT CODE PART ABOVE #########################################################
 
+    ####################################################### GULDKLUMPER BELOW #########################################################
+
+    # Draw the gold nuggets and the text for ther actual points
+    for guldklump in guldklumper:
+        pygame.draw.circle(screen, YELLOW, guldklump["position"], guldklump["radius"] + guldklump["points"])
+        text_goldnugget_individual_points = str(int(guldklump["points"]))
+        text_surface_nuggets = font_nugget_points.render(text_goldnugget_individual_points, True, BLACK)
+        text_rect = text_surface_nuggets.get_rect(center=guldklump["position"])
+        # Tegn teksten på skærmen centreret over guldklumpen
+        screen.blit(text_surface_nuggets, text_rect)
     
 
-    #Make rectangle
-    pygame.draw.rect(screen, (BLACK), (box_position[0], box_position[1], box_size[0], box_size[1]))
+    # Collision detection with pythagoras and gold nugget removal
+    for guldklump in guldklumper[:]:
+        distance = math.sqrt((box_position[0] - guldklump["position"][0])**2 + (box_position[1] - guldklump["position"][1])**2)
+        if distance < guldklump["radius"] + guldklump["points"]:
+            guldklumper_points_individuel.append (guldklump["points"])
+            guldklumper.remove(guldklump)
 
+    ####################################################### GULDKLUMPER ABOVE #########################################################
 
+    ####################################################### POINT SYSTEM BELOW #########################################################
 
-    distance0 = sqrt((box_position[0]-x0)**2+(box_position[1]-y0)**2)
-    distance1 = sqrt((box_position[0]-x1)**2+(box_position[1]-y1)**2)
-    distance2 = sqrt((box_position[0]-x2)**2+(box_position[1]-y2)**2)
-    distance3 = sqrt((box_position[0]-x3)**2+(box_position[1]-y3)**2)
-    distance4 = sqrt((box_position[0]-x4)**2+(box_position[1]-y4)**2)
-    distance5 = sqrt((box_position[0]-x5)**2+(box_position[1]-y5)**2)
-    distance6 = sqrt((box_position[0]-x6)**2+(box_position[1]-y6)**2)
-    distance7 = sqrt((box_position[0]-x7)**2+(box_position[1]-y7)**2)
-    distance8 = sqrt((box_position[0]-x8)**2+(box_position[1]-y8)**2)
-    distance9 = sqrt((box_position[0]-x9)**2+(box_position[1]-y9)**2)
-    
+    #Adds the lists points together
+    total_points = sum(guldklumper_points_individuel)
 
-    #Goes though the guldklumper_list and generates the circles from the list.
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump0["color"], guldklump0["position"], guldklump0["radius"])    
-    if distance0 > 15:    
-        pygame.draw.circle(screen, guldklump1["color"], guldklump1["position"], guldklump1["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump2["color"], guldklump2["position"], guldklump2["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump3["color"], guldklump3["position"], guldklump3["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump4["color"], guldklump4["position"], guldklump4["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump5["color"], guldklump5["position"], guldklump5["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump6["color"], guldklump6["position"], guldklump6["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump7["color"], guldklump7["position"], guldklump7["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump8["color"], guldklump8["position"], guldklump8["radius"])
-    if distance0 > 15:
-        pygame.draw.circle(screen, guldklump9["color"], guldklump9["position"], guldklump9["radius"])
-    
+    #Point system left corner of the screen
+    text_current_score = f"Your score is: {int(total_points)}"
+    text_surface = font_total_score.render(text_current_score, True, BLACK)  # Sort tekst
+    screen.blit(text_surface, (10, 10))  # Tegn teksten på skærmen
 
-    
+    ####################################################### POINT SYSTEM ABOVE #########################################################
+
     pygame.display.flip()
 
-
-
-
-
-    # how many updates per second
-    clock.tick(60)
-
+    # How many updates per second
+    clock.tick(30)
 
 pygame.quit()

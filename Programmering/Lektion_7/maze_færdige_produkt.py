@@ -42,6 +42,6 @@ while running:
 
     pygame.display.flip()
 
-    running = handle_event_exit
+    running = handle_event_exit()
 
 pygame.quit()

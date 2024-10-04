@@ -50,3 +50,5 @@ def draw_vertical(grid, x, y_start, y_end):
     
     for i in range(y_start, y_end + 1):
         grid[i][x] = 1
+
+        return grid

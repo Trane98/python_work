@@ -26,7 +26,7 @@ def create_grid_64x48():
 
 
 
-def draw_vertical(grid, row, start_col, end_col):
+def draw_horizontal(grid, row, start_col, end_col):
     """Vandret, ændrer fx række 10, fra kolonne 5 til 15"""
     for col in range(start_col, end_col + 1):
         grid[row][col] = 1  # Sætter 1-taller fra kolonne 5 til 15 i række 10
@@ -34,7 +34,7 @@ def draw_vertical(grid, row, start_col, end_col):
 
 
 
-def draw_horizontal(grid, col, start_row, end_row):
+def draw_vertical(grid, col, start_row, end_row):
     """Lodret, ændrer fx kolonne 20 fra række 5 til 15"""
     for row in range(start_row, end_row + 1):
         grid[row][col] = 1  # Sætter 1-taller fra række 5 til 15 i kolonne 20

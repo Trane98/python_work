@@ -31,3 +31,14 @@ def create_grid_64x48():
         grid_function.append(template_for_64x48.copy()) #Laver en række, som er en seperat liste
 
     return grid_function
+
+
+def draw_horizontal(grid, y, x_start, x_end):
+    """Tegner en vandret linje fra x_start til x_end på rækken y"""
+    if x_start > x_end:
+        x_start, x_end = x_end, x_start
+
+    for i in range(x_start, x_end + 1): #Plus en er med for at sikre, at slutværdien inkluderes i løkken
+        grid[y][i] = 1
+
+    return grid

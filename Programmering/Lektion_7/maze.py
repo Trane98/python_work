@@ -7,8 +7,9 @@ block_size = 10
 grid = create_grid_64x48
 
 
-draw_horizontal(grid, row=10, start_col=5, end_col=15)
-draw_vertical(grid, col=20, start_row=5, end_row=15)
+draw_vertical(grid, row=20, start_col=5, end_col=15)
+draw_horizontal(grid, col=10, start_row=5, end_row=15)
+
 
 pygame.init()
 screen = pygame.display.set_mode((640, 480))

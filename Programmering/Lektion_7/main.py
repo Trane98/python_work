@@ -21,34 +21,20 @@ def update_screen(screen, color):
 
 def create_grid_64x48():
     """Laver en liste med 64x48 0'er"""
-    template_for_64x48 = []
-
-    for _ in range(64):
-        template_for_64x48.append(0)
-
-    grid_function = []
-    for _ in range(48):
-        grid_function.append(template_for_64x48.copy()) #Laver en række, som er en seperat liste
-
-    return grid_function
+    grid_64x48 = [[0 for col in range(64)] for row in range(48)]
+    return grid_64x48
 
 
-def draw_horizontal(grid, y, x_start, x_end):
-    """Tegner en vandret linje fra x_start til x_end på rækken y"""
-    if x_start > x_end:
-        x_start, x_end = x_end, x_start
 
-    for i in range(x_start, x_end + 1): #Plus en er med for at sikre, at slutværdien inkluderes i løkken
-        grid[y][i] = 1
+def draw_vertical(grid, row, start_col, end_col):
+    """Vandret, ændrer fx række 10, fra kolonne 5 til 15"""
+    for col in range(start_col, end_col + 1):
+        grid[row][col] = 1  # Sætter 1-taller fra kolonne 5 til 15 i række 10
 
-    return grid
 
-def draw_vertical(grid, x, y_start, y_end):
-    """Tegner en lodret linje fra y_start til y_end på kolonnen x"""
-    if y_start > y_end:
-        y_start, y_end = y_end, y_start
-    
-    for i in range(y_start, y_end + 1):
-        grid[i][x] = 1
 
-        return grid
+
+def draw_horizontal(grid, col, start_row, end_row):
+    """Lodret, ændrer fx kolonne 20 fra række 5 til 15"""
+    for row in range(start_row, end_row + 1):
+        grid[row][col] = 1  # Sætter 1-taller fra række 5 til 15 i kolonne 20

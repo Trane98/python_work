@@ -42,3 +42,11 @@ def draw_horizontal(grid, y, x_start, x_end):
         grid[y][i] = 1
 
     return grid
+
+def draw_vertical(grid, x, y_start, y_end):
+    """Tegner en lodret linje fra y_start til y_end på kolonnen x"""
+    if y_start > y_end:
+        y_start, y_end = y_end, y_start
+    
+    for i in range(y_start, y_end + 1):
+        grid[i][x] = 1

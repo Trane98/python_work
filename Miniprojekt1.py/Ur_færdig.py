@@ -12,7 +12,7 @@ while True:
     screen.fill((255,255,255)) #Fungere mest som backup, til hvis baggrundsbilledet ikke virker
 
     #Laver baggrund til uret (Hvis ikke vejen virker og billedet fejler, så slet de 3 efterfølgende linjer.)
-    image_path = os.path.join(os.path.dirname(__file__), 'Ur_billede.png')
+    image_path = os.path.join(os.path.dirname(__file__), 'Ur_billede_bruges_i_kode.png')
     imp = pygame.image.load(image_path)
     screen.blit(imp, (-102, -150)) #Billede passer ikke helt, derfor er det blevet vinklet ind med følgende x og y værdier
 

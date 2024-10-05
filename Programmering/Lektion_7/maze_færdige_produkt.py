@@ -1,9 +1,9 @@
 import pygame
 import random
-from main import create_grid_64x48
-from main import draw_horizontal
-from main import draw_vertical
-from main import handle_event_exit
+from python_work.Programmering.Lektion_8.main import create_grid_64x48
+from python_work.Programmering.Lektion_8.main import draw_horizontal
+from python_work.Programmering.Lektion_8.main import draw_vertical
+from python_work.Programmering.Lektion_8.main import handle_event_exit
 
 block_size = 10
 grid = create_grid_64x48()

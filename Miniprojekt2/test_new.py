@@ -1,5 +1,6 @@
 import pygame, sys
 from main import handle_event_exit
+from queue import Queue
 
 #Makes the grid 64x48
 grid = [[0 for col in range(64)] for row in range(48)]
@@ -11,8 +12,13 @@ cell_size = 10
 #Colors
 colors = {0: (30, 200, 30), #Green
           1: (30, 30 ,200), #Blue
-          2: (125, 125, 125) #Grey
+          2: (125, 125, 125), #Grey
+          "path": (255, 255, 0) #Yellow
           }
+
+
+
+
 
 #Starts pygame
 pygame.init()
@@ -42,6 +48,8 @@ while running:
                 elif event.key == pygame.K_2:
                     key_state = 2
                     print("Key 2 has been pressed, and its special ability has been activated")
+                    #perform BFS when space is pressed
+
 
         #This detects the left mouse click [0]
         if pygame.mouse.get_pressed()[0]:

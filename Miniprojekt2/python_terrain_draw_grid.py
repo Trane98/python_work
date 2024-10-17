@@ -32,11 +32,11 @@ while running:
                 key_state = 0
                 print("Key 0 has been pressed, and its special ability has been activated")
 
-            if event.key == pygame.K_1:
+            elif event.key == pygame.K_1:
                 key_state = 1
                 print("Key 1 has been pressed, and its special ability has been activated")
 
-            if event.key == pygame.K_2:
+            elif event.key == pygame.K_2:
                 key_state = 2
                 print("Key 2 has been pressed, and its special ability has been activated")
 

@@ -32,3 +32,17 @@ class Terrain_Types:
         self.color = color
         self.grid_number = grid_number
 
+
+
+# Definerer en funktion til at finde gyldige naboer
+def add_neighbors(current):
+    neighbors = []
+    x, y = current
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  # Op, højre, ned, venstre
+
+    for dx, dy in directions:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < 64 and 0 <= ny < 48:  # Sørger for at være indenfor grænserne
+            if grid[nx][ny] == grass.grid_number:  # Tjekker om cellen er græs (0)
+                neighbors.append((nx, ny))
+    return neighbors

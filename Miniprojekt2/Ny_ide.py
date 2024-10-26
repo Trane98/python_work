@@ -2,14 +2,14 @@ import pygame
 import sys
 from queue import Queue
 from main import create_grid_64x48
-
+from main import add_neighbors
 
 
 #Laver grid 64x48
 grid = create_grid_64x48()
 cell_size = 10
-start = grid[1][1]
-goal = grid[62][46]
+start = (1,1)
+goal = (62,46)
 
 class Terrain_Types:
     def __init__(self, color, grid_number):
@@ -18,6 +18,9 @@ class Terrain_Types:
 
 grass = Terrain_Types((30, 200, 30), 0)
 wall = Terrain_Types((0, 0, 0), 1)
+
+# Definerer en funktion til at finde gyldige naboer
+add_neighbors(current)
 
 
 
@@ -38,7 +41,7 @@ while not frontier.empty():
     current = frontier.get()
 #Går igennem alle nabonoder (next) til current-noden. 
 #Her undersøges hver nabo for at se, om den allerede er blevet udforsket.
-    for next in graph.neighbors(current):
+    for next in add_neighbors(current):
 #Tjekker, om next-noden ikke er blevet besøgt før (dvs., den er ikke i came_from-ordbogen). 
 #Hvis next allerede er besøgt, springes den over for at undgå at udforske noder igen.
         if next not in came_from:
@@ -88,7 +91,9 @@ while running:
             elif grid[col][row] == wall.grid_number:
                 pygame.draw.rect(screen, wall.color, (col * cell_size, row * cell_size, cell_size, cell_size))
     
-    
+     # Tegn sti
+    for pos in path:
+        pygame.draw.rect(screen, (255, 0, 0), (pos[0] * cell_size, pos[1] * cell_size, cell_size, cell_size))
     
     pygame.display.flip()
 

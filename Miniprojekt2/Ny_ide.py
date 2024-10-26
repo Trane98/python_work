@@ -1,15 +1,13 @@
 import pygame
 import sys
 from queue import Queue
-from main import create_grid_64x48
-from main import add_neighbors
-
 
 #Laver grid 64x48
-grid = create_grid_64x48()
+grid_64x48 = [[0 for row in range(48)] for col in range(64)]
 cell_size = 10
-start = (1,1)
-goal = (62,46)
+start = (1, 1)
+goal = (62, 46)
+key_state = 0
 
 class Terrain_Types:
     def __init__(self, color, grid_number):
@@ -19,84 +17,95 @@ class Terrain_Types:
 grass = Terrain_Types((30, 200, 30), 0)
 wall = Terrain_Types((0, 0, 0), 1)
 
-# Definerer en funktion til at finde gyldige naboer
-add_neighbors(current)
+#Definerer en funktion til at finde gyldige naboer
+def add_neighbors(current):
+    neighbors = []
+    x, y = current
+    directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  #Op, højre, ned, venstre
 
+    for dx, dy in directions:
+        nx, ny = x + dx, y + dy
+        if 0 <= nx < 64 and 0 <= ny < 48:  #Sørger for at være indenfor grænserne
+            if grid_64x48[nx][ny] == grass.grid_number:  #Tjekker om cellen er græs altså = 0
+                neighbors.append((nx, ny))
+    return neighbors
 
+#Funktion til at finde stien
+"""Funktionen her implementerer BFS for at finde den koreste sti fra start til mål"""
+def find_path():
+    frontier = Queue() #Starter køen, som bruges til at holde styr på cellerne, som der skal udforskes
+    frontier.put(start) #Tilføjer startpunktet til køen
+    came_from = dict() #Tilføjer en dictionary, som skal bruges til at holde styr på cellerne, så vi kan spores stien tilbage
+    came_from[start] = None  #Her er vores startpunkt
 
+    while not frontier.empty(): #While loop, så der udforskes celler, så længe der er celler der kan udforskes
+        current = frontier.get() #Fjerner den næste celle fra køen
 
-#Opretter en kø kaldet frontier til at holde styr på de noder, der skal udforskes næste gang. I BFS bruges en kø for at sikre, at noderne udforskes i den rækkefølge, de tilføjes.
-frontier = Queue()
-#Tilføjer start-noden (startpunktet for søgningen) til frontier-køen. Dette markerer noden som den første, der skal udforskes.
-frontier.put(start)
-#Initialiserer en tom ordbog (dictionary) kaldet came_from, som vil gemme stien fra hver node. 
-#For hver node B vil came_from[B] angive den node A, der førte til B, hvilket gør det muligt at spore tilbage og genskabe stien, når målet er nået.
-came_from = dict()
-#Sætter start-nodens forgænger til None, da den ikke har nogen forudgående node i stien. 
-#Dette hjælper senere, når man genskaber stien fra startnoden.
-came_from[start] = None
-#Starter en løkke, der fortsætter, så længe der er noder i frontier-køen, hvilket betyder, at der stadig er noder tilbage at udforske.
-while not frontier.empty():
-#Fjerner og henter den næste node, der skal udforskes fra frontier-køen, og gemmer den i current
-    current = frontier.get()
-#Går igennem alle nabonoder (next) til current-noden. 
-#Her undersøges hver nabo for at se, om den allerede er blevet udforsket.
-    for next in add_neighbors(current):
-#Tjekker, om next-noden ikke er blevet besøgt før (dvs., den er ikke i came_from-ordbogen). 
-#Hvis next allerede er besøgt, springes den over for at undgå at udforske noder igen.
-        if next not in came_from:
-#Tilføjer den uudforskede nabonode (next) til frontier-køen, så den vil blive udforsket i fremtidige gentagelser.
-            frontier.put(next)
-#Registrerer, at det er current, der førte til next, ved at sætte came_from[next] = current. 
-#Dette hjælper med at spore stien tilbage fra enhver node til startnoden senere.
-            came_from[next] = current
+        if current == goal: #Stopper algoritmen, når målet er nået. 
+            break
 
+        for next in add_neighbors(current): #Kikker alle naboer til current celle igennem (Bruger add_neighbors funktionen)
+            if next not in came_from: #Kontrollere om den har været ved den før
+                frontier.put(next) #Tilføjer naboen til køen
+                came_from[next] = current #Ser om naboen blev udforsket fra den nuværende celle
 
+    #Genskaber stien fra goal til start
+    current = goal #Starter fra målet for at finde stien tilbage til start.
+    path = [] #Laver en liste, som stien kan gemmes i.
+    if current in came_from: 
+        while current != start: #Følger stien tilbage fra mål til start.
+            path.append(current) #Tilføjer cellen til stien.
+            current = came_from[current] #Går til forældrecellen.
+        path.append(start) #Tilføjer startcellen til stien.
+        path.reverse() #Vender stien om, så den går fra start til mål.
 
-#Sætter current til slutnoden (goal), da vi starter med at gå baglæns fra målet for at finde hele vejen tilbage til startnoden.
-current = goal
-#Opretter en tom liste kaldet path, som skal gemme rækkefølgen af noder fra start til mål.
-path = []
-#Starter en løkke, som fortsætter, indtil vi når startnoden. På hvert trin bevæger vi os baglæns langs stien, der blev gemt i came_from.
-while current != start:
-#Tilføjer current (den nuværende node) til path. Dette bygger stien op bagfra, fra goal til start.
-    path.append(current)
-#Opdaterer current til noden, der førte til den nuværende node, ved at slå op i came_from. Dette bevæger os ét skridt længere mod startnoden.
-    current = came_from[current]
-#Tilføjer start til path, når løkken er færdig. Dette er valgfrit, da startnoden allerede kan være implicit forstået som begyndelsen af stien.
-path.append(start)
-#Vender path-listen om, så rækkefølgen bliver fra start til goal i stedet for omvendt. Dette er også valgfrit, afhængigt af hvordan man vil præsentere stien.
-path.reverse()
-
+    return path
 
 #Starts pygame
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
 
-
 #Makes running true, for the while loop
 running = True
+path = []
 
 while running:
-    screen.fill((255,255,255)) #This is not important
+    screen.fill((255, 255, 255))  #This is not important
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
+        #Registers key to toggle terrain types
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_0:
+                key_state = 0
+                print("Key 0 has been pressed, and its special ability has been activated")
+            elif event.key == pygame.K_1:
+                key_state = 1
+                print("Key 1 has been pressed, and its special ability has been activated")
+            elif event.key == pygame.K_SPACE:
+                path = find_path()  #Find path when spacebar is pressed
+                print("Pathfinding algorithm activated")
+
+    #Detects left mouse click to change terrain
+    if pygame.mouse.get_pressed()[0]:
+        pos = pygame.mouse.get_pos()
+        col = pos[0] // cell_size
+        row = pos[1] // cell_size
+        grid_64x48[col][row] = key_state
+
     for col in range(64):
         for row in range(48):
-            if grid[col][row] == grass.grid_number:
+            if grid_64x48[col][row] == grass.grid_number:
                 pygame.draw.rect(screen, grass.color, (col * cell_size, row * cell_size, cell_size, cell_size))
-            elif grid[col][row] == wall.grid_number:
+            elif grid_64x48[col][row] == wall.grid_number:
                 pygame.draw.rect(screen, wall.color, (col * cell_size, row * cell_size, cell_size, cell_size))
-    
-     # Tegn sti
+
+    #Tegn sti
     for pos in path:
         pygame.draw.rect(screen, (255, 0, 0), (pos[0] * cell_size, pos[1] * cell_size, cell_size, cell_size))
-    
+
     pygame.display.flip()
-
-
 
 pygame.quit()

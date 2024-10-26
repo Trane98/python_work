@@ -62,6 +62,7 @@ while running:
 
             #ONLY FOR DEV, shares the values, what col, row and what value they have. This depends on the key_state
             print(f"Mouse clicked at grid position: (col={col}, row={row}) - Grid value changed to {key_state}")
+
     #Draws the grid
     for col in range(64):
         for row in range(48):
@@ -76,6 +77,6 @@ while running:
 
     pygame.display.flip()
 
- 
+
 
 pygame.quit()

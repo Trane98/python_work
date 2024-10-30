@@ -10,9 +10,11 @@ from main import draw_vertical
 grid_64x48 = create_grid_64x48()
 cell_size = 10
 
-draw_horizontal(grid_64x48, 1, 1, 1)
-draw_vertical(grid_64x48, 1, 1, 1)
-
+#Laver ramme af vægge
+draw_horizontal(grid_64x48, 0, 0, 63)
+draw_horizontal(grid_64x48, 47, 0, 63)
+draw_vertical(grid_64x48, 0, 0, 47)
+draw_vertical(grid_64x48, 63, 0, 47)
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)
 grass = Terrain_Types((30, 200, 30), 0)

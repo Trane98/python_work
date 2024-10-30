@@ -8,9 +8,14 @@ from main import draw_vertical
 
 #Laver grid 64x48 og laver cell size
 grid_64x48 = create_grid_64x48()
+#Til at få pixel og grid overens
 cell_size = 10
-start = [1, 1]
-goal = [62, 46]
+
+#Laver start og slut (2 laves grundet agoritme og liste ikke fungere)
+start_list = [1, 1]
+start = ()
+goal_list = [62, 46]
+goal = ()
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)
@@ -45,11 +50,14 @@ while running:
                 key_state = wall.grid_number
                 print("Key 1 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_SPACE:
-                path = find_path((1,1),(62, 46))  #Start path finding, når space presses
+                path = find_path(start,goal)  #Start path finding, når space presses
                 print("Pathfinding algorithm activated")
             elif event.key == pygame.K_g:
                 key_state = "goal"
-                print("You are about to change the goal from default setting to some other location")
+                print("You are about to change the goal location from default setting to some other location")
+            elif event.key == pygame.K_s:
+                key_state = "start"
+                print("You are about to change the start location from default setting to some other location")
 
     #Registrer om venstre musseklik presses
     if pygame.mouse.get_pressed()[0]:
@@ -60,9 +68,15 @@ while running:
             grid_64x48[col][row] = key_state
         elif key_state == "goal":
             pos = pygame.mouse.get_pos()
-            goal[0] = pos[0] // cell_size
-            goal[1] = pos[1] // cell_size
-            print(goal)
+            goal_list[0] = pos[0] // cell_size
+            goal_list[1] = pos[1] // cell_size
+            goal = tuple(goal_list)
+        elif key_state == "start":
+            pos = pygame.mouse.get_pos()
+            start_list[0] = pos[0] // cell_size
+            start_list[1] = pos[1] // cell_size
+            start = tuple(start_list)
+            
 
             
 
@@ -83,8 +97,8 @@ while running:
     for pos in path:
         pygame.draw.rect(screen, (150, 25, 200), (pos[0] * cell_size, pos[1] * cell_size, cell_size, cell_size))
 
-    pygame.draw.rect(screen, (200, 30, 30), (start[0] * cell_size, start[1] * cell_size, cell_size, cell_size))
-    pygame.draw.rect(screen, (30, 30, 200), (goal[0] * cell_size, goal[1] * cell_size, cell_size, cell_size))
+    pygame.draw.rect(screen, (200, 30, 30), (start_list[0] * cell_size, start_list[1] * cell_size, cell_size, cell_size))
+    pygame.draw.rect(screen, (30, 30, 200), (goal_list[0] * cell_size, goal_list[1] * cell_size, cell_size, cell_size))
 
     #Laver ramme til mappet (Vil altid være dominerende så længe i while-loopet)
     draw_horizontal(grid_64x48, 0, 0, 63)

@@ -13,9 +13,9 @@ cell_size = 10
 
 #Laver start og slut (2 laves grundet agoritme og liste ikke fungere)
 start_list = [1, 1]
-start = ()
+start = (1,1)
 goal_list = [62, 46]
-goal = ()
+goal = (62,46)
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)

@@ -32,7 +32,6 @@ def add_neighbors(current):
 
 
 
-
 #Starts pygame
 pygame.init()
 screen = pygame.display.set_mode((640, 480))
@@ -57,7 +56,7 @@ while running:
                 key_state = 1
                 print("Key 1 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_SPACE:
-                path = find_path(start, goal)  #Find path when spacebar is pressed
+                path = find_path((1,1),(62,46))  #Find path when spacebar is pressed
                 print("Pathfinding algorithm activated")
 
     #Detects left mouse click to change terrain

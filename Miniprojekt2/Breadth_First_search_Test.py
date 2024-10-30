@@ -1,19 +1,19 @@
 import pygame
 import sys
 from queue import Queue
+from main import Terrain_Types
+from main import create_grid_64x48
+from main import add_neighbors
+from main import find_path
 
 #Laver grid 64x48
-grid_64x48 = [[0 for row in range(48)] for col in range(64)]
+grid_64x48 = create_grid_64x48()
 cell_size = 10
 start = (1, 1)
 goal = (62, 46)
 key_state = 0
 
-class Terrain_Types:
-    def __init__(self, color, grid_number):
-        self.color = color
-        self.grid_number = grid_number
-
+#Danner grundlag for terrain types og deres tilhørende værdier (Farve og grid-nummer)
 grass = Terrain_Types((30, 200, 30), 0)
 wall = Terrain_Types((0, 0, 0), 1)
 
@@ -30,36 +30,8 @@ def add_neighbors(current):
                 neighbors.append((nx, ny))
     return neighbors
 
-#Funktion til at finde stien
-"""Funktionen her implementerer BFS for at finde den koreste sti fra start til mål"""
-def find_path():
-    frontier = Queue() #Starter køen, som bruges til at holde styr på cellerne, som der skal udforskes
-    frontier.put(start) #Tilføjer startpunktet til køen
-    came_from = dict() #Tilføjer en dictionary, som skal bruges til at holde styr på cellerne, så vi kan spores stien tilbage
-    came_from[start] = None  #Her er vores startpunkt
 
-    while not frontier.empty(): #While loop, så der udforskes celler, så længe der er celler der kan udforskes
-        current = frontier.get() #Fjerner den næste celle fra køen
 
-        if current == goal: #Stopper algoritmen, når målet er nået. 
-            break
-
-        for next in add_neighbors(current): #Kikker alle naboer til current celle igennem (Bruger add_neighbors funktionen)
-            if next not in came_from: #Kontrollere om den har været ved den før
-                frontier.put(next) #Tilføjer naboen til køen
-                came_from[next] = current #Ser om naboen blev udforsket fra den nuværende celle
-
-    #Genskaber stien fra goal til start
-    current = goal #Starter fra målet for at finde stien tilbage til start.
-    path = [] #Laver en liste, som stien kan gemmes i.
-    if current in came_from: 
-        while current != start: #Følger stien tilbage fra mål til start.
-            path.append(current) #Tilføjer cellen til stien.
-            current = came_from[current] #Går til forældrecellen.
-        path.append(start) #Tilføjer startcellen til stien.
-        path.reverse() #Vender stien om, så den går fra start til mål.
-
-    return path
 
 #Starts pygame
 pygame.init()
@@ -76,7 +48,7 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-        #Registers key to toggle terrain types
+        #Registrer 0,1 og space, til at ændre i grid eller starte algorithmen
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_0:
                 key_state = 0
@@ -85,7 +57,7 @@ while running:
                 key_state = 1
                 print("Key 1 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_SPACE:
-                path = find_path()  #Find path when spacebar is pressed
+                path = find_path(start, goal)  #Find path when spacebar is pressed
                 print("Pathfinding algorithm activated")
 
     #Detects left mouse click to change terrain
@@ -95,6 +67,7 @@ while running:
         row = pos[1] // cell_size
         grid_64x48[col][row] = key_state
 
+    #Tegner grid "0" og "1"
     for col in range(64):
         for row in range(48):
             if grid_64x48[col][row] == grass.grid_number:

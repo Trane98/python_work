@@ -89,7 +89,7 @@ def find_path(start,goal):
 def draw_horizontal(grid_64x48, row, start_col, end_col):
     """Vandret, ændrer fx række 10, fra kolonne 5 til 15"""
     for col in range(start_col, end_col + 1): #Plus 1 skyldes at det vil give det rigtige antal, så man ikke skal tænke på at sætte ekstra ind
-        grid_64x48[row][col] = 1  # Sætter 1-taller fra kolonne 5 til 15 i række 10
+        grid_64x48[col][row] = 1  # Sætter 1-taller fra kolonne 5 til 15 i række 10
 
 
 
@@ -97,4 +97,4 @@ def draw_horizontal(grid_64x48, row, start_col, end_col):
 def draw_vertical(grid, col, start_row, end_row):
     """Lodret, ændrer fx kolonne 20 fra række 5 til 15"""
     for row in range(start_row, end_row + 1): #Plus 1 skyldes at det vil give det rigtige antal, så man ikke skal tænke på at sætte ekstra ind
-        grid_64x48[row][col] = 1  # Sætter 1-taller fra række 5 til 15 i kolonne 20
+        grid_64x48[col][row] = 1  # Sætter 1-taller fra række 5 til 15 i kolonne 20

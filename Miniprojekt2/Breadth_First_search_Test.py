@@ -10,8 +10,8 @@ from main import draw_vertical
 grid_64x48 = create_grid_64x48()
 cell_size = 10
 
-draw_horizontal(grid_64x48, 0, 1, 1)
-draw_vertical(grid_64x48, 0, 1, 1)
+draw_horizontal(grid_64x48, 1, 1, 1)
+draw_vertical(grid_64x48, 1, 1, 1)
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)

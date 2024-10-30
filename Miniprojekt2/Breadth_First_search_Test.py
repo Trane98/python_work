@@ -3,10 +3,15 @@ from main import Terrain_Types
 from main import create_grid_64x48
 from main import add_neighbors
 from main import find_path
+from main import draw_horizontal
+from main import draw_vertical
 
-#Laver grid 64x48
+#Laver grid 64x48 og laver cell size
 grid_64x48 = create_grid_64x48()
 cell_size = 10
+
+draw_horizontal(grid_64x48, 0, 1, 1)
+draw_vertical(grid_64x48, 0, 1, 1)
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)
@@ -20,7 +25,7 @@ key_state = grass.grid_number
 
 #Starts pygame
 pygame.init()
-screen = pygame.display.set_mode((640, 480))
+screen = pygame.display.set_mode((840, 480))
 
 #Makes running true, for the while loop
 running = True

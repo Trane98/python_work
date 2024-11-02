@@ -53,19 +53,15 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_0:
                 key_state = grass.grid_number
-                print("Key 0 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_1:
                 key_state = wall.grid_number
-                print("Key 1 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_SPACE:
                 path = find_path(start,goal)  #Start path finding, når space presses
                 print("Pathfinding algorithm activated")
             elif event.key == pygame.K_g:
                 key_state = "goal"
-                print("You are about to change the goal location from default setting to some other location")
             elif event.key == pygame.K_s:
                 key_state = "start"
-                print("You are about to change the start location from default setting to some other location")
         
 
             

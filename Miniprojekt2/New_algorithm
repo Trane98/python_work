@@ -56,7 +56,7 @@ while running:
             elif event.key == pygame.K_1:
                 key_state = wall.grid_number
             elif event.key == pygame.K_SPACE:
-                path = find_path(start,goal)  #Start path finding, når space presses
+                path = dijkstra(graph, start,goal)  #Start path finding, når space presses
                 print("Pathfinding algorithm activated")
             elif event.key == pygame.K_g:
                 key_state = "goal"

@@ -27,8 +27,14 @@ font = pygame.font.Font(None, 36) #None giver en defualt font, og tallet efter, 
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)
-grass = Terrain_Types((30, 200, 30), 0)
-wall = Terrain_Types((0, 0, 0), 1)
+grass = Terrain_Types((30, 200, 30), 3)
+dessert = Terrain_Types((210, 180, 120), 5)
+mountain = Terrain_Types((105,105,105), 7)
+water = Terrain_Types((0, 105, 148), 7)
+forest = Terrain_Types((25, 80, 25), 5)
+road = Terrain_Types((50, 50, 50), 2) 
+wall = Terrain_Types((0, 0, 0), 10000)#Not passable (Trumps wall)
+
 
 
 
@@ -40,7 +46,7 @@ def neighbors(current):
     x, y = current
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  #Op, højre, ned, venstre
     neighbors = []
-    for dx, dy in directions:
+    for dx, dy in directions: 
         nx, ny = x + dx, y + dy
         if 0 <= nx < 64 and 0 <= ny < 48:  #Sørger for at være indenfor grænserne
             neighbors.append((nx, ny))
@@ -49,9 +55,19 @@ def neighbors(current):
 def cost(current, next):
     x, y = next
     if grid_64x48[x][y] == grass.grid_number:
-        return 1
+        return grass.grid_number
+    elif grid_64x48[x][y] == dessert.grid_number:
+        return dessert.grid_number
+    elif grid_64x48[x][y] == mountain.grid_number:
+        return mountain.grid_number
+    elif grid_64x48[x][y] == water.grid_number:
+        return water.grid_number
+    elif grid_64x48[x][y] == forest.grid_number:
+        return forest.grid_number
+    elif grid_64x48[x][y] == road.grid_number:
+        return road.grid_number
     elif grid_64x48[x][y] == wall.grid_number:
-        return 2
+        return wall.grid_number
 
 def dijkstra(grid_64x48, start, goal):
     """Funktionen her implementerer dijkstra for at finde den koreste sti fra start til mål"""
@@ -112,6 +128,16 @@ while running:
             if event.key == pygame.K_0:
                 key_state = grass.grid_number
             elif event.key == pygame.K_1:
+                key_state = dessert.grid_number
+            elif event.key == pygame.K_2:
+                key_state = mountain.grid_number
+            elif event.key == pygame.K_3:
+                key_state = water.grid_number
+            elif event.key == pygame.K_4:
+                key_state = forest.grid_number
+            elif event.key == pygame.K_5:
+                key_state = road.grid_number
+            elif event.key == pygame.K_0:
                 key_state = wall.grid_number
             elif event.key == pygame.K_SPACE:
                 came_from = dijkstra(grid_64x48, start, goal)  #Start path finding, når space presses
@@ -154,6 +180,16 @@ while running:
         for row in range(48):
             if grid_64x48[col][row] == grass.grid_number:
                 pygame.draw.rect(screen, grass.color, (col * cell_size, row * cell_size, cell_size, cell_size))
+            elif grid_64x48[col][row] == dessert.grid_number:
+                pygame.draw.rect(screen, dessert.color, (col * cell_size, row * cell_size, cell_size, cell_size))
+            elif grid_64x48[col][row] == mountain.grid_number:
+                pygame.draw.rect(screen, mountain.color, (col * cell_size, row * cell_size, cell_size, cell_size))
+            elif grid_64x48[col][row] == water.grid_number:
+                pygame.draw.rect(screen, water.color, (col * cell_size, row * cell_size, cell_size, cell_size))
+            elif grid_64x48[col][row] == forest.grid_number:
+                pygame.draw.rect(screen, forest.color, (col * cell_size, row * cell_size, cell_size, cell_size))
+            elif grid_64x48[col][row] == road.grid_number:
+                pygame.draw.rect(screen, road.color, (col * cell_size, row * cell_size, cell_size, cell_size))
             elif grid_64x48[col][row] == wall.grid_number:
                 pygame.draw.rect(screen, wall.color, (col * cell_size, row * cell_size, cell_size, cell_size))
     

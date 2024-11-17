@@ -8,7 +8,7 @@ from main import draw_vertical
 
 #Starts pygame
 pygame.init()
-screen = pygame.display.set_mode((840, 480))
+screen = pygame.display.set_mode((880, 480))
 
 #Laver grid 64x48 og laver cell size
 grid_64x48 = create_grid_64x48()
@@ -21,16 +21,12 @@ start = (1,1)
 goal_list = [62, 46]
 goal = (62,46)
 
+#Farver til text
+green = (30,200,30)
+red = (200, 30, 30)
 
 #Font setup
 font = pygame.font.Font(None, 36) #None giver en defualt font, og tallet efter, er font size. 
-
-#Render text
-text = font.render("Hello Pygame!", True, (0,0,0)) #True aktiverer anti-aliasing
-
-#Position af text
-
-text_rect = text.get_rect(center=(730,20))
 
 
 #Klasserne og deres tilhørende værdier (Farve og tilhørende grid-nummer)
@@ -57,19 +53,18 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_0:
                 key_state = grass.grid_number
-                print("Key 0 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_1:
                 key_state = wall.grid_number
-                print("Key 1 has been pressed, and its special ability has been activated")
             elif event.key == pygame.K_SPACE:
                 path = find_path(start,goal)  #Start path finding, når space presses
                 print("Pathfinding algorithm activated")
             elif event.key == pygame.K_g:
                 key_state = "goal"
-                print("You are about to change the goal location from default setting to some other location")
             elif event.key == pygame.K_s:
                 key_state = "start"
-                print("You are about to change the start location from default setting to some other location")
+        
+
+            
 
     #Registrer om venstre musseklik presses
     if pygame.mouse.get_pressed()[0]:
@@ -119,7 +114,50 @@ while running:
     draw_vertical(grid_64x48, 63, 0, 47)
 
 
-    screen.blit(text, text_rect)
+    #Render text (Default settings)
+    text_grass = font.render("0 to change grass", True, (red)) #True aktiverer anti-aliasing
+    text_wall = font.render("1 to change wall", True, (red))
+    text_start = font.render("s to change start", True, (red))
+    text_goal = font.render("g to change goal", True, (red))
+    text_path = font.render("Space to find path", True, (0,0,0))
+
+
+    #Position af text
+    text_rect_grass = text_grass.get_rect(center=(750,20))
+    text_rect_wall = text_wall.get_rect(center=(742,50))
+    text_rect_start = text_grass.get_rect(center=(750,80))
+    text_rect_goal = text_wall.get_rect(center=(742,110))
+    text_rect_path = text_grass.get_rect(center=(748,140))
+
+    #Opdater tekstfarve baseret på key_state
+    if key_state == grass.grid_number:
+        text_grass = font.render("0 to change grass", True, green)
+    else:
+        text_grass = font.render("0 to change grass", True, red)
+
+    if key_state == wall.grid_number:
+        text_wall = font.render("1 to change wall", True, green)
+    else:
+        text_wall = font.render("1 to change wall", True, red)
+
+    if key_state == "start":
+        text_start = font.render("s to change start", True, green)
+    else:
+        text_start = font.render("s to change start", True, red)
+
+    if key_state == "goal":
+        text_goal = font.render("g to change goal", True, green)
+    else:
+        text_goal = font.render("g to change goal", True, red)
+
+
+    #Visning af text
+    screen.blit(text_grass, text_rect_grass)
+    screen.blit(text_wall, text_rect_wall)
+    screen.blit(text_start, text_rect_start)
+    screen.blit(text_goal, text_rect_goal)
+    screen.blit(text_path, text_rect_path)
+
 
     pygame.display.flip()
 

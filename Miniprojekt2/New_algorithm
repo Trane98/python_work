@@ -7,7 +7,7 @@ pygame.init()
 screen = pygame.display.set_mode((930, 480))
 
 #Laver grid 64x48 med default værdi for grass
-grid_64x48 = grid_64x48 = [[3 for row in range(48)] for col in range(64)]
+grid_64x48 = [[3 for row in range(48)] for col in range(64)]
 #Til at få pixel og grid overens
 cell_size = 10
 
@@ -155,24 +155,26 @@ while running:
     if pygame.mouse.get_pressed()[0]:
         if key_state in valid_key_states: #Kontrollere alle valid key states
             pos = pygame.mouse.get_pos()
-            col = pos[0] // cell_size
-            row = pos[1] // cell_size
-            grid_64x48[col][row] = key_state
+            if pos[0] >= 0 and pos[0] <= 63 * cell_size and pos[1] >= 0 and pos[1] <= 47 * cell_size:
+                col = pos[0] // cell_size
+                row = pos[1] // cell_size
+                grid_64x48[col][row] = key_state
         elif key_state == "goal":
             pos = pygame.mouse.get_pos()
-            goal_list[0] = pos[0] // cell_size
-            goal_list[1] = pos[1] // cell_size
-            goal = tuple(goal_list)
+            if pos[0] >= 0 and pos[0] <= 63 * cell_size and pos[1] >= 0 and pos[1] <= 47 * cell_size:
+                goal_list[0] = pos[0] // cell_size
+                goal_list[1] = pos[1] // cell_size
+                goal = tuple(goal_list)
         elif key_state == "start":
             pos = pygame.mouse.get_pos()
-            start_list[0] = pos[0] // cell_size
-            start_list[1] = pos[1] // cell_size
-            start = tuple(start_list)
+            if pos[0] >= 0 and pos[0] <= 63 * cell_size and pos[1] >= 0 and pos[1] <= 47 * cell_size:
+                start_list[0] = pos[0] // cell_size
+                start_list[1] = pos[1] // cell_size
+                start = tuple(start_list)
             
 
             
 
- 
 
 
     #Tegner grid alle valid_key_states
@@ -205,30 +207,11 @@ while running:
 
 
 
-    #Render text (Default settings)
-    text_grass = font.render("1 to change grass", True, (red)) #True aktiverer anti-aliasing
-    text_desert = font.render("2 to change desert", True, (red))
-    text_mountain = font.render("3 to change mountain", True, (red))
-    text_water = font.render("4 to change water", True, (red))
-    text_forest = font.render("5 to change forest", True, (red))
-    text_road = font.render("6 to change road", True, (red))
-    text_wall = font.render("0 to change wall", True, (red))
-    text_start = font.render("s to change start", True, (red))
-    text_goal = font.render("g to change goal", True, (red))
-    text_path = font.render("Space to find path", True, (0,0,0))
 
 
-    #Position af text
-    text_rect_grass = text_grass.get_rect(center=(750,20))
-    text_rect_dessert = text_desert.get_rect(center=(755,50))
-    text_rect_mountain = text_mountain.get_rect(center=(774,80))
-    text_rect_water = text_water.get_rect(center=(750,110))
-    text_rect_forest = text_forest.get_rect(center=(750,140))
-    text_rect_road = text_road.get_rect(center=(745,170))
-    text_rect_wall = text_wall.get_rect(center=(742,200))
-    text_rect_start = text_grass.get_rect(center=(750,230))
-    text_rect_goal = text_wall.get_rect(center=(742,260))
-    text_rect_path = text_grass.get_rect(center=(748,290))
+
+
+
 
     #Opdater tekstfarve baseret på key_state
     if key_state == grass.grid_number:
@@ -276,6 +259,19 @@ while running:
     else:
         text_goal = font.render("g to change goal", True, red)
 
+    text_path = font.render("Space to find path", True, (0,0,0))
+
+    #Position af text
+    text_rect_grass = text_grass.get_rect(center=(750,20))
+    text_rect_dessert = text_desert.get_rect(center=(755,50))
+    text_rect_mountain = text_mountain.get_rect(center=(774,80))
+    text_rect_water = text_water.get_rect(center=(750,110))
+    text_rect_forest = text_forest.get_rect(center=(750,140))
+    text_rect_road = text_road.get_rect(center=(745,170))
+    text_rect_wall = text_wall.get_rect(center=(742,200))
+    text_rect_start = text_grass.get_rect(center=(750,230))
+    text_rect_goal = text_wall.get_rect(center=(742,260))
+    text_rect_path = text_grass.get_rect(center=(748,290))
 
     #Visning af text
     screen.blit(text_grass, text_rect_grass)

@@ -103,8 +103,8 @@ def reconstruct_path(came_from, start, goal):
     while current != start:
         path.append(current)
         current = came_from[current]
-    path.append(start)  # Tilføj start til slutningen
-    path.reverse()  # Reverserer listen for at få stien fra start til mål
+    path.append(start)  #Tilføj start til slutningen
+    path.reverse()  #Reverserer listen for at få stien fra start til mål
     return path
 
 
@@ -203,14 +203,6 @@ while running:
 
     pygame.draw.rect(screen, (200, 30, 30), (start_list[0] * cell_size, start_list[1] * cell_size, cell_size, cell_size))
     pygame.draw.rect(screen, (30, 30, 200), (goal_list[0] * cell_size, goal_list[1] * cell_size, cell_size, cell_size))
-
-
-
-
-
-
-
-
 
 
     #Opdater tekstfarve baseret på key_state

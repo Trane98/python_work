@@ -53,6 +53,7 @@ def neighbors(current):
     return neighbors
 
 def cost(current, next):
+    """Definere hvad cost der skal være, ved de forskellige celler"""
     x, y = next
     if grid_64x48[x][y] == grass.grid_number:
         return grass.grid_number

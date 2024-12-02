@@ -1,4 +1,5 @@
-import pygame, sys
+import pygame
+from queue import PriorityQueue
 from main import Terrain_Types
 
 
@@ -34,7 +35,7 @@ forest = Terrain_Types((25, 80, 25), 4)
 road = Terrain_Types((50, 50, 50), 2) 
 wall = Terrain_Types((0, 0, 0), 10000)#Not passable (Trumps wall to Mexican border)
 
-
+#Liste med alle grid numre, så de kan loopes igennem
 valid_key_states = [grass.grid_number, desert.grid_number, mountain.grid_number, water.grid_number, forest.grid_number, road.grid_number, wall.grid_number]
 
 
@@ -43,6 +44,7 @@ key_state = grass.grid_number
 
 
 def neighbors(current):
+    """Funktionen her sørger for at finde alle naboer til en cell"""
     x, y = current
     directions = [(0, 1), (1, 0), (0, -1), (-1, 0)]  #Op, højre, ned, venstre
     neighbors = []
@@ -72,7 +74,6 @@ def cost(current, next):
 
 def dijkstra(grid_64x48, start, goal):
     """Funktionen her implementerer dijkstra for at finde den koreste sti fra start til mål"""
-    from queue import PriorityQueue
     frontier = PriorityQueue()
     frontier.put(start, 0)
     came_from = dict()
@@ -99,6 +100,7 @@ def dijkstra(grid_64x48, start, goal):
 
 
 def reconstruct_path(came_from, start, goal):
+    """Funktionen her sørger for at reconstruere stien fra start til goal"""
     current = goal
     path = []
     while current != start:
@@ -118,13 +120,13 @@ running = True
 path = []
 
 while running:
-    screen.fill((255, 255, 255))  #Kan egentlig bare slettes til sidst
+    screen.fill((160, 160, 160))  #Ændrer egentlig kun farven på højre side
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
 
-        #Registrer 0,1 og space, til at ændre i grid eller starte algorithmen
+        #Registrer alle muligheder for at trykke forskellige taster på keyboard
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_1:
                 key_state = grass.grid_number
@@ -148,6 +150,11 @@ while running:
                 key_state = "goal"
             elif event.key == pygame.K_s:
                 key_state = "start"
+            elif event.key == pygame.K_r:
+                path.clear()
+            elif event.key == pygame.K_t:
+                grid_64x48.clear()
+                grid_64x48 = [[3 for row in range(48)] for col in range(64)]
         
 
             
@@ -253,18 +260,22 @@ while running:
         text_goal = font.render("g to change goal", True, red)
 
     text_path = font.render("Space to find path", True, (0,0,0))
+    reset_path = font.render("r to reset path", True, (0,0,0))
+    reset_terrain = font.render("t to reset terrain", True, (0,0,0))
 
     #Position af text
     text_rect_grass = text_grass.get_rect(center=(750,20))
     text_rect_dessert = text_desert.get_rect(center=(755,50))
     text_rect_mountain = text_mountain.get_rect(center=(774,80))
     text_rect_water = text_water.get_rect(center=(750,110))
-    text_rect_forest = text_forest.get_rect(center=(750,140))
+    text_rect_forest = text_forest.get_rect(center=(752,140))
     text_rect_road = text_road.get_rect(center=(745,170))
     text_rect_wall = text_wall.get_rect(center=(742,200))
-    text_rect_start = text_grass.get_rect(center=(750,230))
-    text_rect_goal = text_wall.get_rect(center=(742,260))
-    text_rect_path = text_grass.get_rect(center=(748,290))
+    text_rect_start = text_start.get_rect(center=(745,230))
+    text_rect_goal = text_goal.get_rect(center=(745,260))
+    text_rect_path = text_path.get_rect(center=(750,290))
+    text_rect_reset_path = reset_path.get_rect(center=(725, 320))
+    text_rect_reset_terrain = reset_terrain.get_rect(center=(737, 350))
 
     #Visning af text
     screen.blit(text_grass, text_rect_grass)
@@ -277,6 +288,8 @@ while running:
     screen.blit(text_start, text_rect_start)
     screen.blit(text_goal, text_rect_goal)
     screen.blit(text_path, text_rect_path)
+    screen.blit(reset_path, text_rect_reset_path)
+    screen.blit(reset_terrain, text_rect_reset_terrain)
 
 
     pygame.display.flip()
